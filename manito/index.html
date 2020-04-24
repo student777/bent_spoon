@@ -1,0 +1,46 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script>
+        var myName = prompt('당신에 instagram 아이디를 입력하세요(정확히)');
+        if (!myName) refresh();
+        else ajax('./result.json');
+
+        function ajax(url) {
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                    if (httpRequest.status === 200) {
+                        var result = JSON.parse(httpRequest.responseText);
+                        var manitoName = result[myName];
+                        if (!result || !manitoName) {
+                            refresh();
+                            return;
+                        }
+                        print('당신에 마니또는 ' + result[myName] + ' 입니다');
+                    } else {
+                        print('error')
+                    }
+                }
+            };
+            httpRequest.open('GET', url);
+            httpRequest.send();
+        }
+
+        function print(data) {
+            document.getElementById('result').innerHTML = data;
+        }
+
+        function refresh() {
+            alert('이름을 정확히 입력해주세요');
+            window.location.reload();
+        }
+    </script>
+</head>
+
+<body>
+    <h2 id='result'></h2>
+</body>
+
+</html>
